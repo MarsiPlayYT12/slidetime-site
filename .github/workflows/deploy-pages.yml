@@ -8,7 +8,7 @@ on:
       deploy_target:
         description: "Hosting path for this build"
         required: false
-        default: github-pages
+        default: custom-domain
         type: choice
         options: [github-pages, custom-domain]
 
@@ -33,7 +33,7 @@ jobs:
       - run: npm ci
       - name: Build static site
         env:
-          DEPLOY_TARGET: ${{ inputs.deploy_target || vars.DEPLOY_TARGET || 'github-pages' }}
+          DEPLOY_TARGET: ${{ inputs.deploy_target || vars.DEPLOY_TARGET || 'custom-domain' }}
         run: |
           if [ "$DEPLOY_TARGET" = "custom-domain" ]; then
             NEXT_PUBLIC_BASE_PATH="" npm run build
