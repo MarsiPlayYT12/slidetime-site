@@ -25,6 +25,8 @@ Workflow `.github/workflows/deploy-pages.yml` собирает и публику
 
 `public/CNAME` уже содержит `www.slidetime.space`. В DNS добавьте CNAME-запись `www` со значением `MarsiPlayYT12.github.io`, после чего укажите `www.slidetime.space` в **Settings → Pages → Custom domain**. Для корневого `slidetime.space` настройте редирект на `www` у DNS-провайдера.
 
+По умолчанию workflow собирает сайт для временного project URL `https://marsiplayyt12.github.io/slidetime-site/` и добавляет нужный префикс `/slidetime-site` ко всем CSS, JavaScript и public-ресурсам. После подключения `www.slidetime.space` создайте в **Settings → Secrets and variables → Actions → Variables** переменную `DEPLOY_TARGET` со значением `custom-domain` и выполните workflow вручную. Следующая сборка будет использовать корневые пути `/` для собственного домена. Для локальной проверки project-версии используйте `NEXT_PUBLIC_BASE_PATH=/slidetime-site npm run build`.
+
 ## FunPay
 
 Конфигурация товаров и ссылки FunPay находятся в `lib/donation-items.ts`.
