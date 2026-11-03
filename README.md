@@ -1,8 +1,8 @@
 # SlideTime
 
-Одностраничный сайт Minecraft-сервера SlideTime на React, TypeScript, Tailwind CSS и Vinext / Cloudflare Workers.
+Одностраничный сайт Minecraft-сервера SlideTime на Next.js, React, TypeScript и Tailwind CSS. Он подготовлен для полностью статического GitHub Pages.
 
-## Запуск
+## Локальный запуск
 
 Требуется Node.js 22+.
 
@@ -11,12 +11,20 @@ npm install
 npm run dev
 ```
 
-Откройте URL, который покажет Vite (обычно `http://127.0.0.1:5173`). Для production-сборки: `npm run build`.
+Откройте `http://localhost:3000`. Команда `npm run build` создаёт готовый статический сайт в `out/`.
 
-## Статус сервера
+## Онлайн Minecraft
 
-Маршрут `GET /api/status` запрашивает реальный Java-статус `slidetime.space` через HTTPS API mcstatus.io. Интерфейс обновляет его каждые 30 секунд. Если проверка невозможна, посетитель увидит «Статус временно недоступен».
+Онлайн `slidetime.space` запрашивается напрямую у публичного HTTPS API mcstatus.io. Данные обновляются каждые 30 секунд. При сетевой ошибке сайт выводит нейтральное сообщение, не подставляя выдуманный онлайн.
+
+GitHub Pages не запускает Node.js, Cloudflare Workers, API Routes или базы данных. Поэтому прежний серверный маршрут перенесён в `worker/status-api.ts` как заготовка для будущего Cloudflare Worker, а статический сайт использует CORS-доступный внешний API. Папки `db` и `drizzle` сейчас не содержат прикладных таблиц и не используются интерфейсом. Если позже потребуются пользовательские данные или платежи, используйте Cloudflare Workers + D1 либо Supabase/Firebase; секреты храните только в настройках такого сервиса.
+
+## GitHub Pages
+
+Workflow `.github/workflows/deploy-pages.yml` собирает и публикует `out/` после каждого push в ветку `main`. В репозитории откройте **Settings → Pages** и выберите источник **GitHub Actions**.
+
+`public/CNAME` уже содержит `www.slidetime.space`. В DNS добавьте CNAME-запись `www` со значением `MarsiPlayYT12.github.io`, после чего укажите `www.slidetime.space` в **Settings → Pages → Custom domain**. Для корневого `slidetime.space` настройте редирект на `www` у DNS-провайдера.
 
 ## FunPay
 
-Конфигурация товаров находится в `lib/donation-items.ts`. После создания лотов добавьте URL товара в поле `funpayUrl` нужной привилегии и замените временное окно в `app/page.tsx` на переход по этой ссылке.
+Конфигурация товаров и ссылки FunPay находятся в `lib/donation-items.ts`.
