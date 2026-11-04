@@ -19,7 +19,8 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  # A stale Pages deployment must not hold newer site updates in the queue.
+  cancel-in-progress: true
 
 jobs:
   build:
